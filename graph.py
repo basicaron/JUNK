@@ -5,4 +5,4 @@ class window(QWidget):
         super().__init__()
     
     def initUI(self):
-        pass
+        self.show()
