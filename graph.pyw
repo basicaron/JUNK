@@ -1,47 +1,37 @@
-from PyQt5 import QtGui
+from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QPlainTextEdit, QHBoxLayout,QTextEdit,QFileDialog
-import sys
+from PyQt5.QtWidgets import *
 
-
-class Window(QWidget):
-    def __init__(self):
+class window(QWidget):
+    def __init__(self,res):
         super().__init__()
+        self.setGeometry(100,15,600,500)
+        self.Abc = []
+        self.screensize = [res.width(),res.height()]
+        self.Abc.append(['first',[int(self.screensize[0]/2),int(self.screensize[1]/8)],[100,50],None])
+        self.InitUI()
 
-        self.title = "PyQt5 Plain TextEdit"
-        self.top = 200
-        self.left = 500
-        self.width = 400
-        self.height = 300
+    def InitUI(self):
 
-
-
-        self.InitWindow()
-        
-
-    def select_file(self):
-        dail = QFileDialog()
-        fil = dail.getOpenFileName()
-        return fil[0]
-
-    def InitWindow(self):
-        self.setWindowIcon(QtGui.QIcon("icon.png"))
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
-        
+        self.showMaximized()
     
-        plainText = QTextEdit(self)
-    
-        plainText.setStyleSheet("background-color:grey")
-
-        #plainText.setReadOnly(True)
-        plainText.setGeometry(100,15,600,500)
-    
-        plainText.setUndoRedoEnabled(False)
-        self.show()
-        
-
-
-App = QApplication(sys.argv)
-window = Window()
-sys.exit(App.exec())
+    def paintEvent(self,event):
+        A,B = True,True
+        i = 0
+        paint = QPainter(self)
+        paint.setBrush(QBrush(Qt.gray,Qt.SolidPattern))
+        for temp in self.Abc:   
+            while B:
+                paint.drawRect(temp[1][0]-temp[2][0],temp[1][1]-temp[2][1],temp[2][0]*2,temp[2][1]*2)
+                temp = temp[3]
+                if temp == None:
+                    B = False
+                    
+    def contextMenuEvent(self,event):
+        menu = QMenu(self)
+        new = QAction("New")
+        menu.addAction(new)
+        menu.exec(self.mapToGlobal(event.pos()))
+app = QApplication([])
+w = window(app.primaryScreen().size())
+app.exec_()
