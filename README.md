@@ -1,2 +1,2 @@
 # JUNK
-Node like graph for management :check:
+Node like graph for management :heavy_check_mark:
